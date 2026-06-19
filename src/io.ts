@@ -12,11 +12,6 @@ import {
 import type { LevelData, TileType } from "./types";
 import { resizeCanvas, draw } from "./draw";
 
-const setStatus = (msg: string) => {
-  const el = document.getElementById("status")!;
-  el.textContent = msg;
-};
-
 export const buildJSON = (): LevelData => {
   let start: [number, number] | null = null;
   let end: [number, number] | null = null;
@@ -88,8 +83,6 @@ export const exportJSON = () => {
   a.href = URL.createObjectURL(blob);
   a.download = (data.name || "level") + ".json";
   a.click();
-
-  setStatus("Exported " + a.download);
 };
 
 export const importJSON = () => {
@@ -107,7 +100,6 @@ export const importJSON = () => {
       try {
         const data = JSON.parse(ev.target!.result as string) as LevelData;
         loadFromJSON(data);
-        setStatus("Imported " + file.name);
       } catch {
         alert("Invalid JSON file");
       }

@@ -10,6 +10,8 @@ import {
   endCell,
   asteroids,
   setCurrentAsteroidIndex,
+  setAsteroids,
+  currentAsteroidIndex,
 } from "./state";
 import type { TileType, Cell } from "./types";
 import { resizeCanvas, draw } from "./draw";
@@ -24,6 +26,8 @@ export const initGrid = () => {
 
   setStartCell(null);
   setEndCell(null);
+  setAsteroids([]);
+  setCurrentAsteroidIndex(-1);
 
   resizeCanvas();
   draw();
@@ -40,19 +44,16 @@ export const resizeGrid = () => {
 };
 
 export const paintCell = (cell: Cell, erase: boolean) => {
+  const prev = grid[cell.y][cell.x];
   const tile: TileType = erase ? "empty" : selectedTile;
 
   if (tile === "start") {
-    if (startCell) {
-      grid[startCell.y][startCell.x] = "empty";
-    }
+    if (startCell) grid[startCell.y][startCell.x] = "empty";
     setStartCell({ x: cell.x, y: cell.y });
   }
 
   if (tile === "end") {
-    if (endCell) {
-      grid[endCell.y][endCell.x] = "empty";
-    }
+    if (endCell) grid[endCell.y][endCell.x] = "empty";
     setEndCell({ x: cell.x, y: cell.y });
   }
 
@@ -66,13 +67,32 @@ export const paintCell = (cell: Cell, erase: boolean) => {
     setCurrentAsteroidIndex(asteroids.length - 1);
   }
 
-  if (tile === "asteroid_path" && asteroids.length > 0) {
-    const currentAsteroid = asteroids[asteroids.length - 1];
-    const already = currentAsteroid.path.some(
-      ([px, py]) => px === cell.x && py === cell.y,
+  if (tile === "asteroid_path") {
+    const currentAsteroid = asteroids[currentAsteroidIndex];
+    currentAsteroid.path.push([cell.x, cell.y]);
+  }
+
+  if (erase && prev === "asteroid_path") {
+    const asteroid = asteroids[currentAsteroidIndex];
+    if (asteroid) {
+      const i = asteroid.path.findIndex(
+        ([x, y]) => x === cell.x && y === cell.y,
+      );
+      if (i !== -1) asteroid.path.splice(i, 1);
+    }
+  }
+
+  if (erase && prev === "asteroid") {
+    const idx = asteroids.findIndex(
+      (a) => a.cell.x === cell.x && a.cell.y === cell.y,
     );
-    if (!already) {
-      currentAsteroid.path.push([cell.x, cell.y]);
+    if (idx !== -1) {
+      asteroids[idx].path.forEach(([x, y]) => (grid[y][x] = "empty"));
+      asteroids.splice(idx, 1);
+
+      setCurrentAsteroidIndex(
+        Math.min(currentAsteroidIndex, asteroids.length - 1),
+      );
     }
   }
 

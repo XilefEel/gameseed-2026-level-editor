@@ -6,6 +6,7 @@ const canvas = document.getElementById("grid-canvas") as HTMLCanvasElement;
 
 let isPainting = false;
 let isErasing = false;
+let lastPaintedCell: Cell | null = null;
 
 const cellFromEvent = (e: MouseEvent): Cell | null => {
   const rect = canvas.getBoundingClientRect();
@@ -27,20 +28,34 @@ export const setupInput = () => {
     isErasing = e.button === 2;
     isPainting = true;
 
-    paintCell(cellFromEvent(e)!, isErasing);
+    const cell = cellFromEvent(e);
+    lastPaintedCell = cell;
+    if (cell) {
+      paintCell(cell, isErasing);
+    }
   });
 
   canvas.addEventListener("mousemove", (e) => {
     if (!isPainting) return;
 
     const cell = cellFromEvent(e);
-    if (cell) {
-      paintCell(cell, isErasing);
+    if (!cell) return;
+
+    if (
+      lastPaintedCell &&
+      cell.x === lastPaintedCell.x &&
+      cell.y === lastPaintedCell.y
+    ) {
+      return;
     }
+
+    paintCell(cell, isErasing);
+    lastPaintedCell = cell;
   });
 
   canvas.addEventListener("mouseup", () => {
     isPainting = false;
+    lastPaintedCell = null;
   });
 
   canvas.addEventListener("mouseleave", () => {
