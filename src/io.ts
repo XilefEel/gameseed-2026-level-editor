@@ -5,6 +5,9 @@ import {
   setGridSize,
   setStartCell,
   setEndCell,
+  asteroids,
+  setAsteroids,
+  setCurrentAsteroidIndex,
 } from "./state";
 import type { LevelData, TileType } from "./types";
 import { resizeCanvas, draw } from "./draw";
@@ -20,8 +23,6 @@ export const buildJSON = (): LevelData => {
 
   const debris: [number, number][] = [];
   const houses: [number, number][] = [];
-  const asteroids: [number, number][] = [];
-  const asteroid_paths: [number, number][] = [];
   const blackholes: [number, number][] = [];
   const pirates: [number, number][] = [];
   const portals: [number, number][] = [];
@@ -34,8 +35,6 @@ export const buildJSON = (): LevelData => {
       if (t === "end") end = [x, y];
       if (t === "debris") debris.push([x, y]);
       if (t === "house") houses.push([x, y]);
-      if (t === "asteroid") asteroids.push([x, y]);
-      if (t === "asteroid_path") asteroid_paths.push([x, y]);
       if (t === "blackhole") blackholes.push([x, y]);
       if (t === "pirate") pirates.push([x, y]);
       if (t === "portal") portals.push([x, y]);
@@ -58,7 +57,6 @@ export const buildJSON = (): LevelData => {
     debris,
     houses,
     asteroids,
-    asteroid_paths,
     blackholes,
     pirates,
     portals,
@@ -80,11 +78,6 @@ export const exportJSON = () => {
 
   if (data.portals.length % 2 !== 0) {
     alert("Portals must be in pairs!");
-    return;
-  }
-
-  if (data.asteroids && data.asteroid_paths.length === 0) {
-    alert("Asteroids must have paths!");
     return;
   }
 
@@ -166,17 +159,19 @@ export const loadFromJSON = (data: LevelData) => {
 
   (data.houses || []).forEach(([x, y]) => (grid[y][x] = "house"));
 
-  (data.asteroids || []).forEach(([x, y]) => (grid[y][x] = "asteroid"));
-
-  (data.asteroid_paths || []).forEach(
-    ([x, y]) => (grid[y][x] = "asteroid_path"),
-  );
-
   (data.blackholes || []).forEach(([x, y]) => (grid[y][x] = "blackhole"));
 
   (data.pirates || []).forEach(([x, y]) => (grid[y][x] = "pirate"));
 
   (data.portals || []).forEach(([x, y]) => (grid[y][x] = "portal"));
+
+  setAsteroids(data.asteroids || []);
+  setCurrentAsteroidIndex(data.asteroids.length > 0 ? 0 : -1);
+
+  (data.asteroids || []).forEach(({ cell: { x, y }, path }) => {
+    path.forEach(([px, py]) => (grid[py][px] = "asteroid_path"));
+    grid[y][x] = "asteroid";
+  });
 
   resizeCanvas();
   draw();

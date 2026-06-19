@@ -8,6 +8,8 @@ import {
   selectedTile,
   startCell,
   endCell,
+  asteroids,
+  setCurrentAsteroidIndex,
 } from "./state";
 import type { TileType, Cell } from "./types";
 import { resizeCanvas, draw } from "./draw";
@@ -55,5 +57,24 @@ export const paintCell = (cell: Cell, erase: boolean) => {
   }
 
   grid[cell.y][cell.x] = tile;
+
+  if (tile === "asteroid") {
+    asteroids.push({
+      cell: { x: cell.x, y: cell.y },
+      path: [[cell.x, cell.y]],
+    });
+    setCurrentAsteroidIndex(asteroids.length - 1);
+  }
+
+  if (tile === "asteroid_path" && asteroids.length > 0) {
+    const currentAsteroid = asteroids[asteroids.length - 1];
+    const already = currentAsteroid.path.some(
+      ([px, py]) => px === cell.x && py === cell.y,
+    );
+    if (!already) {
+      currentAsteroid.path.push([cell.x, cell.y]);
+    }
+  }
+
   draw();
 };

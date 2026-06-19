@@ -1,4 +1,4 @@
-import type { Cell, TileType } from "./types";
+import type { AsteroidData, Cell, TileType } from "./types";
 
 export const CELL_SIZE = 48;
 
@@ -21,6 +21,9 @@ export let selectedTile: TileType = "empty";
 export let startCell: Cell | null = null;
 export let endCell: Cell | null = null;
 
+export let asteroids: AsteroidData[] = [];
+export let currentAsteroidIndex = -1;
+
 export function setGrid(g: TileType[][]) {
   grid = g;
 }
@@ -39,4 +42,12 @@ export function setStartCell(c: Cell | null) {
 
 export function setEndCell(c: Cell | null) {
   endCell = c;
+}
+
+export function setAsteroids(a: AsteroidData[]) {
+  asteroids = a;
+}
+
+export function setCurrentAsteroidIndex(i: number) {
+  currentAsteroidIndex = i;
 }

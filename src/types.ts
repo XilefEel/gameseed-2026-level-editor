@@ -18,8 +18,7 @@ export type LevelData = {
   end_cell: [number, number] | null;
   debris: [number, number][];
   houses: [number, number][];
-  asteroids: [number, number][];
-  asteroid_paths: [number, number][];
+  asteroids: AsteroidData[];
   blackholes: [number, number][];
   pirates: [number, number][];
   portals: [number, number][];
@@ -28,4 +27,9 @@ export type LevelData = {
 export type Cell = {
   x: number;
   y: number;
+};
+
+export type AsteroidData = {
+  cell: Cell;
+  path: [number, number][];
 };
