@@ -18,8 +18,13 @@ export const buildJSON = (): LevelData => {
   let start: [number, number] | null = null;
   let end: [number, number] | null = null;
 
-  const walls: [number, number][] = [];
+  const debris: [number, number][] = [];
   const houses: [number, number][] = [];
+  const asteroids: [number, number][] = [];
+  const asteroid_paths: [number, number][] = [];
+  const blackholes: [number, number][] = [];
+  const pirates: [number, number][] = [];
+  const portals: [number, number][] = [];
 
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
@@ -27,8 +32,13 @@ export const buildJSON = (): LevelData => {
 
       if (t === "start") start = [x, y];
       if (t === "end") end = [x, y];
-      if (t === "debris") walls.push([x, y]);
+      if (t === "debris") debris.push([x, y]);
       if (t === "house") houses.push([x, y]);
+      if (t === "asteroid") asteroids.push([x, y]);
+      if (t === "asteroid_path") asteroid_paths.push([x, y]);
+      if (t === "blackhole") blackholes.push([x, y]);
+      if (t === "pirate") pirates.push([x, y]);
+      if (t === "portal") portals.push([x, y]);
     }
   }
 
@@ -45,8 +55,13 @@ export const buildJSON = (): LevelData => {
     moves: moves || 15,
     start_cell: start,
     end_cell: end,
-    walls,
+    debris,
     houses,
+    asteroids,
+    asteroid_paths,
+    blackholes,
+    pirates,
+    portals,
   };
 };
 
@@ -60,6 +75,16 @@ export const exportJSON = () => {
 
   if (!data.end_cell) {
     alert("Place an end cell first!");
+    return;
+  }
+
+  if (data.portals.length % 2 !== 0) {
+    alert("Portals must be in pairs!");
+    return;
+  }
+
+  if (data.asteroids && data.asteroid_paths.length === 0) {
+    alert("Asteroids must have paths!");
     return;
   }
 
@@ -137,9 +162,21 @@ export const loadFromJSON = (data: LevelData) => {
     setEndCell({ x, y });
   }
 
-  (data.walls || []).forEach(([x, y]) => (grid[y][x] = "debris"));
+  (data.debris || []).forEach(([x, y]) => (grid[y][x] = "debris"));
 
   (data.houses || []).forEach(([x, y]) => (grid[y][x] = "house"));
+
+  (data.asteroids || []).forEach(([x, y]) => (grid[y][x] = "asteroid"));
+
+  (data.asteroid_paths || []).forEach(
+    ([x, y]) => (grid[y][x] = "asteroid_path"),
+  );
+
+  (data.blackholes || []).forEach(([x, y]) => (grid[y][x] = "blackhole"));
+
+  (data.pirates || []).forEach(([x, y]) => (grid[y][x] = "pirate"));
+
+  (data.portals || []).forEach(([x, y]) => (grid[y][x] = "portal"));
 
   resizeCanvas();
   draw();

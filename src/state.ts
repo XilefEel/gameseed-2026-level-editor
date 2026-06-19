@@ -8,6 +8,11 @@ export const COLORS: Record<TileType, string> = {
   end: "#ffc90e",
   debris: "#595959",
   house: "#b97a57",
+  asteroid: "#7F7F7F",
+  asteroid_path: "#16162D",
+  blackhole: "#ED1C24",
+  pirate: "#A349A4",
+  portal: "#00A2E8",
 };
 
 export let grid: TileType[][] = [];
