@@ -1,156 +1,193 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Level Editor</title>
-    <link rel="stylesheet" href="src/style.css" />
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Level Editor</title>
+        <link rel="stylesheet" href="src/style.css" />
+    </head>
 
-  <body>
-    <header>
-      <h1>Level Editor</h1>
-    </header>
+    <body>
+        <header>
+            <h1>Level Editor</h1>
+        </header>
 
-    <div class="workspace">
-      <div class="sidebar">
-        <div class="sidebar-section">
-          <div class="section-label">Tiles</div>
+        <div class="workspace">
+            <div class="sidebar sidebar-tiles">
+                <div class="sidebar-section">
+                    <div class="section-label">Tiles</div>
 
-          <button
-            class="tile-btn"
-            data-tile="start"
-            onclick="selectTile('start', this)"
-          >
-            <span class="tile-dot" style="background: #b5e61d"></span>
-            Start
-          </button>
+                    <button
+                        class="tile-btn"
+                        data-tile="start"
+                        onclick="selectTile('start', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #b5e61d"
+                        ></span>
+                        Start
+                    </button>
 
-          <button
-            class="tile-btn"
-            data-tile="end"
-            onclick="selectTile('end', this)"
-          >
-            <span class="tile-dot" style="background: #ffc90e"></span>
-            End
-          </button>
+                    <button
+                        class="tile-btn"
+                        data-tile="end"
+                        onclick="selectTile('end', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #ffc90e"
+                        ></span>
+                        End
+                    </button>
 
-          <button
-            class="tile-btn"
-            data-tile="debris"
-            onclick="selectTile('debris', this)"
-          >
-            <span class="tile-dot" style="background: #595959"></span>
-            Debris
-          </button>
+                    <button
+                        class="tile-btn"
+                        data-tile="debris"
+                        onclick="selectTile('debris', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #595959"
+                        ></span>
+                        Debris
+                    </button>
 
-          <button
-            class="tile-btn"
-            data-tile="house"
-            onclick="selectTile('house', this)"
-          >
-            <span class="tile-dot" style="background: #b97a57"></span>
-            House
-          </button>
+                    <button
+                        class="tile-btn"
+                        data-tile="house"
+                        onclick="selectTile('house', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #b97a57"
+                        ></span>
+                        House
+                    </button>
 
-          <button
-            class="tile-btn"
-            data-tile="blackhole"
-            onclick="selectTile('blackhole', this)"
-          >
-            <span class="tile-dot" style="background: #ed1c24"></span>
-            Black Hole
-          </button>
+                    <button
+                        class="tile-btn"
+                        data-tile="portal"
+                        onclick="selectTile('portal', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #00a2e8"
+                        ></span>
+                        Portal
+                    </button>
+                </div>
 
-          <button
-            class="tile-btn"
-            data-tile="portal"
-            onclick="selectTile('portal', this)"
-          >
-            <span class="tile-dot" style="background: #00a2e8"></span>
-            Portal
-          </button>
+                <div class="sidebar-section">
+                    <div class="section-label">Enemies/Obstacles</div>
+
+                    <button
+                        class="tile-btn"
+                        data-tile="asteroid"
+                        onclick="selectTile('asteroid', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #7f7f7f"
+                        ></span>
+                        Asteroid
+                    </button>
+
+                    <button
+                        class="tile-btn"
+                        data-tile="asteroid_path"
+                        onclick="selectTile('asteroid_path', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #16162d"
+                        ></span>
+                        Asteroid Path
+                    </button>
+
+                    <button
+                        class="tile-btn"
+                        data-tile="pirate"
+                        onclick="selectTile('pirate', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #a349a4"
+                        ></span>
+                        Pirate
+                    </button>
+
+                    <button
+                        class="tile-btn"
+                        data-tile="blackhole"
+                        onclick="selectTile('blackhole', this)"
+                    >
+                        <span
+                            class="tile-dot"
+                            style="background: #ed1c24"
+                        ></span>
+                        Black Hole
+                    </button>
+                </div>
+            </div>
+
+            <div class="canvas-area">
+                <canvas id="grid-canvas"></canvas>
+            </div>
+
+            <div class="sidebar sidebar-meta">
+                <div class="sidebar-section">
+                    <div class="section-label">Level settings</div>
+
+                    <div class="meta">
+                        <label>Level name</label>
+                        <input
+                            type="text"
+                            id="level-name"
+                            value="level_01"
+                            placeholder="level_01"
+                        />
+                    </div>
+
+                    <div class="meta">
+                        <label>Grid size</label>
+
+                        <input
+                            type="number"
+                            id="grid-size"
+                            value="8"
+                            min="4"
+                            max="16"
+                            onchange="resizeGrid()"
+                        />
+                    </div>
+
+                    <div class="meta">
+                        <label>Starting moves</label>
+                        <input
+                            type="number"
+                            id="start-moves"
+                            value="15"
+                            min="1"
+                            max="99"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="sidebar-section">
-          <div class="section-label">Enemies/Obstacles</div>
+        <div class="bottom-bar">
+            <span id="status">Ready</span>
 
-          <button
-            class="tile-btn"
-            data-tile="asteroid"
-            onclick="selectTile('asteroid', this)"
-          >
-            <span class="tile-dot" style="background: #7f7f7f"></span>
-            Asteroid
-          </button>
-
-          <button
-            class="tile-btn"
-            data-tile="asteroid_path"
-            onclick="selectTile('asteroid_path', this)"
-          >
-            <span class="tile-dot" style="background: #16162d"></span>
-            Asteroid Path
-          </button>
-
-          <button
-            class="tile-btn"
-            data-tile="pirate"
-            onclick="selectTile('pirate', this)"
-          >
-            <span class="tile-dot" style="background: #a349a4"></span>
-            Pirate
-          </button>
+            <div class="btn-group">
+                <button class="btn danger" onclick="clearGrid()">Clear</button>
+                <button class="btn" onclick="importJSON()">Import JSON</button>
+                <button class="btn primary" onclick="exportJSON()">
+                    Export JSON
+                </button>
+            </div>
         </div>
 
-        <div class="sidebar-section">
-          <div class="section-label">Level settings</div>
-
-          <div class="meta">
-            <label>Level name</label>
-            <input
-              type="text"
-              id="level-name"
-              value="level_01"
-              placeholder="level_01"
-            />
-          </div>
-
-          <div class="meta">
-            <label>Grid size</label>
-
-            <input
-              type="number"
-              id="grid-size"
-              value="8"
-              min="4"
-              max="16"
-              onchange="resizeGrid()"
-            />
-          </div>
-
-          <div class="meta">
-            <label>Starting moves</label>
-            <input type="number" id="start-moves" value="15" min="1" max="99" />
-          </div>
-        </div>
-      </div>
-
-      <div class="canvas-area">
-        <canvas id="grid-canvas"></canvas>
-      </div>
-    </div>
-
-    <div class="bottom-bar">
-      <span id="status">Ready</span>
-
-      <div class="btn-group">
-        <button class="btn danger" onclick="clearGrid()">Clear</button>
-        <button class="btn" onclick="importJSON()">Import JSON</button>
-        <button class="btn primary" onclick="exportJSON()">Export JSON</button>
-      </div>
-    </div>
-
-    <script type="module" src="src/main.js"></script>
-  </body>
+        <script type="module" src="src/main.js"></script>
+    </body>
 </html>
