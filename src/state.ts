@@ -1,4 +1,4 @@
-import type { AsteroidData, Cell, TileType } from "./types";
+import type { AsteroidData, Cell, PortalData, TileType } from "./types";
 
 export const CELL_SIZE = 48;
 
@@ -12,7 +12,11 @@ export const COLORS: Record<TileType, string> = {
   asteroid_path: "#16162D",
   blackhole: "#ED1C24",
   pirate: "#A349A4",
-  portal: "#00A2E8",
+  hotspot: "#ff7f27",
+  portal_up: "#00A2E8",
+  portal_down: "#00A2E8",
+  portal_left: "#00A2E8",
+  portal_right: "#00A2E8",
 };
 
 export let grid: TileType[][] = [];
@@ -23,6 +27,8 @@ export let endCell: Cell | null = null;
 
 export let asteroids: AsteroidData[] = [];
 export let currentAsteroidIndex = -1;
+
+export let portals: PortalData[] = [];
 
 export function setGrid(g: TileType[][]) {
   grid = g;

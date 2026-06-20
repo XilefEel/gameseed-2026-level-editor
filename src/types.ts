@@ -8,7 +8,11 @@ export type TileType =
   | "asteroid_path"
   | "blackhole"
   | "pirate"
-  | "portal";
+  | "hotspot"
+  | "portal_up"
+  | "portal_down"
+  | "portal_left"
+  | "portal_right";
 
 export type LevelData = {
   name: string;
@@ -21,7 +25,7 @@ export type LevelData = {
   asteroids: AsteroidData[];
   blackholes: [number, number][];
   pirates: [number, number][];
-  portals: [number, number][];
+  portals: PortalData[];
 };
 
 export type Cell = {
@@ -32,4 +36,9 @@ export type Cell = {
 export type AsteroidData = {
   cell: Cell;
   path: [number, number][];
+};
+
+export type PortalData = {
+  cell: Cell;
+  dir: "up" | "down" | "left" | "right";
 };

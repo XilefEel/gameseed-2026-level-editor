@@ -12,6 +12,7 @@ import {
   setCurrentAsteroidIndex,
   setAsteroids,
   currentAsteroidIndex,
+  portals,
 } from "./state";
 import type { TileType, Cell } from "./types";
 import { resizeCanvas, draw } from "./draw";
@@ -94,6 +95,34 @@ export const paintCell = (cell: Cell, erase: boolean) => {
         Math.min(currentAsteroidIndex, asteroids.length - 1),
       );
     }
+  }
+
+  if (tile === "portal_up") {
+    portals.push({
+      cell: { x: cell.x, y: cell.y },
+      dir: "up",
+    });
+  }
+
+  if (tile === "portal_down") {
+    portals.push({
+      cell: { x: cell.x, y: cell.y },
+      dir: "down",
+    });
+  }
+
+  if (tile === "portal_left") {
+    portals.push({
+      cell: { x: cell.x, y: cell.y },
+      dir: "left",
+    });
+  }
+
+  if (tile === "portal_right") {
+    portals.push({
+      cell: { x: cell.x, y: cell.y },
+      dir: "right",
+    });
   }
 
   draw();

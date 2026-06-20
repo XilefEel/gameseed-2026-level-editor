@@ -8,6 +8,7 @@ import {
   asteroids,
   setAsteroids,
   setCurrentAsteroidIndex,
+  portals,
 } from "./state";
 import type { LevelData, TileType } from "./types";
 import { resizeCanvas, draw } from "./draw";
@@ -20,7 +21,6 @@ export const buildJSON = (): LevelData => {
   const houses: [number, number][] = [];
   const blackholes: [number, number][] = [];
   const pirates: [number, number][] = [];
-  const portals: [number, number][] = [];
 
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
@@ -32,7 +32,6 @@ export const buildJSON = (): LevelData => {
       if (t === "house") houses.push([x, y]);
       if (t === "blackhole") blackholes.push([x, y]);
       if (t === "pirate") pirates.push([x, y]);
-      if (t === "portal") portals.push([x, y]);
     }
   }
 
@@ -154,8 +153,6 @@ export const loadFromJSON = (data: LevelData) => {
   (data.blackholes || []).forEach(([x, y]) => (grid[y][x] = "blackhole"));
 
   (data.pirates || []).forEach(([x, y]) => (grid[y][x] = "pirate"));
-
-  (data.portals || []).forEach(([x, y]) => (grid[y][x] = "portal"));
 
   setAsteroids(data.asteroids || []);
   setCurrentAsteroidIndex(data.asteroids.length > 0 ? 0 : -1);
