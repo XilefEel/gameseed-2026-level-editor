@@ -18,6 +18,7 @@ export type LevelData = {
   name: string;
   grid_size: number;
   moves: number;
+  parcel_type: "normal" | "fragile" | "flammable";
   start_cell: [number, number] | null;
   end_cell: [number, number] | null;
   debris: [number, number][];

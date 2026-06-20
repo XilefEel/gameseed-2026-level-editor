@@ -42,10 +42,15 @@ export const buildJSON = (): LevelData => {
     (document.getElementById("start-moves") as HTMLInputElement).value,
   );
 
+  const parcelType = (
+    document.getElementById("parcel-type") as HTMLSelectElement
+  ).value as "normal" | "fragile" | "flammable";
+
   return {
     name: levelName || "level_01",
     grid_size: gridSize,
     moves: moves || 15,
+    parcel_type: parcelType || "normal",
     start_cell: start,
     end_cell: end,
     debris,
