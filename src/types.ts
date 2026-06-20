@@ -27,6 +27,7 @@ export type LevelData = {
   blackholes: [number, number][];
   pirates: [number, number][];
   portals: PortalData[];
+  hotspot: [number, number][]
 };
 
 export type Cell = {

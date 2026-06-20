@@ -21,6 +21,7 @@ export const buildJSON = (): LevelData => {
   const houses: [number, number][] = [];
   const blackholes: [number, number][] = [];
   const pirates: [number, number][] = [];
+  const hotspot: [number, number][] = [];
 
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
@@ -32,6 +33,7 @@ export const buildJSON = (): LevelData => {
       if (t === "house") houses.push([x, y]);
       if (t === "blackhole") blackholes.push([x, y]);
       if (t === "pirate") pirates.push([x, y]);
+      if (t === "hotspot") hotspot.push([x, y]);
     }
   }
 
@@ -59,6 +61,7 @@ export const buildJSON = (): LevelData => {
     blackholes,
     pirates,
     portals,
+    hotspot,
   };
 };
 
